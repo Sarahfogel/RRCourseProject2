@@ -1,0 +1,16 @@
+---
+title: "Replace Title -Reproducible Research Course Project 2"
+author: "Sarah Fogel"
+date: "Wednesday, January 14, 2015"
+output: html_document
+---
+
+## Synopsis
+
+
+
+## Data Processing
+
+
+
+## Results

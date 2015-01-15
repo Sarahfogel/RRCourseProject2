@@ -1,0 +1,17 @@
+{
+    "contents" : "---\ntitle: \"Replace Title -Reproducible Research Course Project 2\"\nauthor: \"Sarah Fogel\"\ndate: \"Wednesday, January 14, 2015\"\noutput: html_document\n---\n\n## Synopsis\n\n\n\n## Data Processing\n\n\n\n## Results",
+    "created" : 1421288987581.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "726445422",
+    "id" : "7583E39B",
+    "lastKnownWriteTime" : 1421289121,
+    "path" : "~/Coursera Data Science Specialization/Reproducible Research/RRCourseProject2/RRCourseProject2.Rmd",
+    "project_path" : "RRCourseProject2.Rmd",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_markdown"
+}

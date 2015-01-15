@@ -1,0 +1,17 @@
+{
+    "contents" : "#===================Reproducible Research Course Project 2======================\n\n# This script contains the exploratory analysis for the course project\n#   The final product is contained in the Rmd file and published to RPubs\n\n#====================Assignment=================================================\n#The basic goal of this assignment is to explore the NOAA Storm Database and \n#   answer some basic questions about severe weather events. You must use the \n#   database to answer the questions below and show the code for your entire \n#   analysis. Your analysis can consist of tables, figures, or other summaries. \n#   You may use any R package you want to support your analysis.\n\n#=============================Questions=========================================\n#Your data analysis must address the following questions:\n    \n# 1. Across the United States, which types of events (as indicated in the EVTYPE\n#    variable) are most harmful with respect to population health?\n\n# 2. Across the United States, which types of events have the greatest economic \n#    consequences?\n\n#Consider writing your report as if it were to be read by a government or \n#    municipal manager who might be responsible for preparing for severe weather\n#    events and will need to prioritize resources for different types of events.\n#    However, there is no need to make any specific recommendations in your report.\n\n\n#============================Read in the Data===================================\n\n# Download the data\n\n    download.file(\"https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2\", \"StormData.csv.bz2\")\n\n# Read the data into R\n\n    stormdata<-read.csv(\"StormData.csv.bz2\")\n\n#=========================Initial Exploratory Analysis==========================\n\n    summary(stormdata)\n    head(stormdata)\n    tail(stormdata)\n\n    hist(stormdata$FATALITIES)\n    hist(stormdata$FATALITIES[stormdata$FATALITIES!=0])\n    summary(stormdata$FATALITIES[stormdata$FATALITIES!=0])\n    table(stormdata$FATALITIES)\n    table(stormdata$INJURIES)\n    table(stormdata$PROPDMG)\n    hist(stormdata$PROPDMG)\n    hist(stormdata$PROPDMG[stormdata$PROPDMG>0])\n\n# Population Health variables: FATALITIES, INJURIES\n",
+    "created" : 1421288947342.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4247865810",
+    "id" : "30333D97",
+    "lastKnownWriteTime" : 1421290917,
+    "path" : "~/Coursera Data Science Specialization/Reproducible Research/RRCourseProject2/Course Project 2 script.R",
+    "project_path" : "Course Project 2 script.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
