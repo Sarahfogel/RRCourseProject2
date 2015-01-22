@@ -27,14 +27,18 @@
 
 #============================Read in the Data===================================
 
-# Download the data
+# Download the data - first check to see if it's already there
 
-    download.file("https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2", "StormData.csv.bz2")
-
+    if("StormData.csv.bz2" %in% dir()){} else {
+        download.file("https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2", "StormData.csv.bz2")
+    }
 # Read the data into R
 
     stormdata<-read.csv("StormData.csv.bz2")
+    
+# Decrease the memory requirements by eliminating all but the variables we will use
 
+    stormdata<-stormdata[c("EVTYPE", "FATALITIES", "INJURIES", "PROPDMG")]
 #=========================Initial Exploratory Analysis==========================
 
     dim(stormdata)
@@ -71,23 +75,66 @@
     median.fatalities.by.type<-sapply(by.event.type, median)
 
     rm(by.event.type)   #To conserve memory
+
+#Repeat for injuries
+    by.event.type<-split(INJURIES, EVTYPE)
+    # Apply sum and median
+    total.injuries.by.type<-sapply(by.event.type, sum)
+    median.injuries.by.type<-sapply(by.event.type, median)
+    
+    rm(by.event.type)   
     detach(stormdata)
+
 
 # Look at the results in histograms
 # This was not useful, comment it out
 #    par(mfrow=c(3,1))
-#    hist(total.fatalities.by.type)
-#    hist(mean.fatalities.by.type)
-#    hist(median.fatalities.by.type)
+#    hist(log(total.fatalities.by.type+1))
+#    hist(log(mean.fatalities.by.type+1))
+#    hist(log(median.fatalities.by.type+1))
 #    par(mfrow=c(1,1))
-
+summary(mean.fatalities.by.type)
 # Look at the results in tables
     table(total.fatalities.by.type)
     table(mean.fatalities.by.type)
     table(median.fatalities.by.type)
 
     hist(mean.fatalities.by.type[mean.fatalities.by.type>0])
+# Line graph of fatalities by type
+    par(mfrow=c(2,1), mar=c(4.3,4.3,2,2))
+    plot(total.fatalities.by.type, type="l", xlab="", ylab="Total Fatalities")
+#    plot(mean.fatalities.by.type, type="l", col="red")
+    plot(median.fatalities.by.type, type="l", xlab="Event Type", ylab="Median Fatalities")
+    par(mfrow=c(1,1), mar=(c(5,4,4,2)+.1)
 
+    # Line graph of injuries by type
+    par(mfrow=c(2,1), mar=c(4.3,4.3,2,2))
+    plot(total.injuries.by.type, type="l", xlab="", ylab="Total Injuries")
+    plot(median.injuries.by.type, type="p", xlab="Event Type", ylab="Median Injuries")
+    par(mfrow=c(1,1), mar=(c(5,4,4,2)+.1)
+        
+        
+        
+        
+    # Split the property damage variable by event type
+    attach(stormdata)
+    by.event.type<-split(PROPDMG, EVTYPE)
+    # Apply sum and median
+    total.propdamage.by.type<-sapply(by.event.type, sum)
+    median.propdamage.by.type<-sapply(by.event.type, median)
+    
+    rm(by.event.type)   
+    
+    detach(stormdata)
+    
+    
+    # Line graph of property damage by type
+    par(mfrow=c(2,1), mar=c(4.3,4.3,2,2))
+    plot(total.propdamage.by.type, type="l", xlab="", ylab="Total Property Damage")
+    #    plot(mean.fatalities.by.type, type="l", col="red")
+    plot(median.propdamage.by.type, type="l", xlab="Event Type", ylab="Median Property Damage")
+    par(mfrow=c(1,1), mar=(c(5,4,4,2)+.1)
+        
 # Extract the event types with the highest total number of fatalities, 
 #    highest mean fatalities and highest median fatalities
 
@@ -100,6 +147,12 @@
     head(names(total.fatalities.by.type[order(total.fatalities.by.type, decreasing=T)]), n=5)
     head(names(mean.fatalities.by.type[order(mean.fatalities.by.type, decreasing=T)]), n=5)
     head(names(median.fatalities.by.type[order(median.fatalities.by.type, decreasing=T)]), n=5)
+
+
+    head(names(total.fatalities.by.type[order(total.fatalities.by.type, decreasing=T)]), n=1)
+    head(names(median.fatalities.by.type[order(median.fatalities.by.type, decreasing=T)]), n=3)
+    head(names(total.injuries.by.type[order(total.injuries.by.type, decreasing=T)]), n=1)
+    head(names(median.injuries.by.type[order(median.injuries.by.type, decreasing=T)]), n=1)
 
     mean.fatalities.by.type["TORNADO"]
 
@@ -193,4 +246,6 @@
 
     length(which(event.class==""))
     names(event.type.table[which(event.class=="")])
+#STOP!!!  Come up with a better plan
+
 

@@ -1,16 +1,116 @@
 ---
-title: "Replace Title -Reproducible Research Course Project 2"
+title: "Analysis of Which Weather Events Have the Greatest Impact Economically and on Population Health"
 author: "Sarah Fogel"
 date: "Wednesday, January 14, 2015"
 output: html_document
 ---
 
 ## Synopsis
-
+The following analysis attempts to identify the types of weather events which are the most harmful to population health and which cause the most economic damage.  The data used is taken from a database developed by the U.S. National Oceanic and Atmospheric Administration and was accessed on January 14th, 2015.  THe analysis assumes that fatalities and injuries are a proxy for population health and property damage is a proxy for economic impact.  This analysis finds that, in general, tornados cause the most damage in both categories.
 
 
 ## Data Processing
-
+First check to see if the data has already been downloaded into the working directory.  If it has not, then download it.
+```{r, results='hide'}
+    if("StormData.csv.bz2" %in% dir()){} else {
+        download.file("https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2", "StormData.csv.bz2")
+    }
+```
+Now read the data into R and subset it to include only the variables of interest.  These are the event type, the number of fatalities, the number of injuries, and the dollar value of the property damage.
+```{r, cache=TRUE}
+    stormdata<-read.csv("StormData.csv.bz2")
+    stormdata<-stormdata[c("EVTYPE", "FATALITIES", "INJURIES", "PROPDMG")]
+```
+No further pre-processing is necessary for this analysis.  All further analysis will be performed on this data frame as is.
 
 
 ## Results
+
+Two general methods will be used to identify the "most" damaging weather events - those events which cause the most total damage and those events which cause the highest median damage.
+
+### Population Health
+To evaluate the effects of the various weather events on population health, the variables describing fatalities and injuries will be used.
+
+First, the total and median number of fatalities and injuries were calcuated for each event.
+
+```{r}
+# Split the fatalities variable by event type
+    attach(stormdata)
+    by.event.type<-split(FATALITIES, EVTYPE)
+# Apply sum and median
+    total.fatalities.by.type<-sapply(by.event.type, sum)
+    median.fatalities.by.type<-sapply(by.event.type, median)
+
+    rm(by.event.type)   
+# Repeat for injuries
+    by.event.type<-split(INJURIES, EVTYPE)
+# Apply sum and median
+    total.injuries.by.type<-sapply(by.event.type, sum)
+    median.injuries.by.type<-sapply(by.event.type, median)
+
+    rm(by.event.type)   
+    detach(stormdata)
+```
+
+The total and median number of fatalties and injuries are graphed below.
+```{r}
+# Graph fatalities by type
+    par(mfrow=c(2,1), mar=c(4.3,4.3,2,2))
+    plot(total.fatalities.by.type, type="l", xlab="", ylab="Total Fatalities")
+    plot(median.fatalities.by.type, type="l", xlab="Event Type", ylab="Median Fatalities")
+    
+# Graph injuries by type
+    plot(total.injuries.by.type, type="l", xlab="", ylab="Total Injuries")
+    plot(median.injuries.by.type, type="l", xlab="Event Type", ylab="Median Injuries")  
+    par(mfrow=c(1,1), mar=(c(5,4,4,2)+.1))
+```
+
+Based on these graphs, various ouliers have been identified: one major peak in the total fatalities per type, three outlying peaks in median fatalities by type, one major peak in total injuries per type and two outlying peaks in median injuries by type.
+
+The event types that cause the most damage to population health are identified below:
+
+```{r, results='hold'}
+    head(names(total.fatalities.by.type[order(total.fatalities.by.type, decreasing=T)]), n=1)
+    head(names(median.fatalities.by.type[order(median.fatalities.by.type, decreasing=T)]), n=3)
+    head(names(total.injuries.by.type[order(total.injuries.by.type, decreasing=T)]), n=1)
+    head(names(median.injuries.by.type[order(median.injuries.by.type, decreasing=T)]), n=1)
+```
+
+### Economic Impact
+
+To evaluate the effects of the various weather events on population health, the variable describing property damage will be used.
+
+First, the total and median values of property damage were calcuated for each event.
+```{r}
+# Split the property damage variable by event type
+    attach(stormdata)
+    by.event.type<-split(PROPDMG, EVTYPE)
+# Apply sum and median
+    total.propdamage.by.type<-sapply(by.event.type, sum)
+    median.propdamage.by.type<-sapply(by.event.type, median)
+
+    rm(by.event.type)   
+
+    detach(stormdata)
+```
+
+The total and median amount of property damage is graphed below.
+
+```{r}
+    # Line graph of property damage by type
+    par(mfrow=c(2,1), mar=c(4.3,4.3,2,2))
+    plot(total.propdamage.by.type, type="l", xlab="", ylab="Total Property Damage")
+    plot(median.propdamage.by.type, type="l", xlab="Event Type", ylab="Median Property Damage")  
+    par(mfrow=c(1,1), mar=(c(5,4,4,2)+.1))
+```
+
+Based on these graphs, various ouliers have been identified: one major peak in the total property damage per type and one peak that stands out above the rest in median property damage per type.
+
+The event types that cause the most economic damage are identified below:
+
+```{r, results='hold'}
+    head(names(total.propdamage.by.type[order(total.propdamage.by.type, decreasing=T)]), n=1)
+    head(names(median.propdamage.by.type[order(median.propdamage.by.type, decreasing=T)]), n=1)
+```
+
+

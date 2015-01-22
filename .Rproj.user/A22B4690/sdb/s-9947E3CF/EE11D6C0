@@ -1,0 +1,17 @@
+{
+    "contents" : "Rubric:\n        RPubs URL\n    y    English\n    y    title that briefly summarizes the data analysis\n    y    synopsis that describes and summarizes the data analysis in less than 10 sentences\n    y    section titled \"Data Processing\" that describes how the data were loaded into R and processed for analysis\n    y    section titled \"Results\" where the main results are presented\n    y    at least one figure that contains a plot\n    y    at most 3 figures\n    y    starts from the raw data file (original .csv.bz2 file)\n    y    addresses the question of which types of events are most harmful to population health\n    y    addresses the question of which types of events have the greatest economic consequences\n    y    results reproducible\n    y    figures have descriptive captions\n    y    description and justification for any data transformations\n    y    original (not plagarized)",
+    "created" : 1421958560951.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1441035410",
+    "id" : "EE11D6C0",
+    "lastKnownWriteTime" : 1421963361,
+    "path" : "~/Coursera Courses/Reproducible Research/RRCourseProj2/Rubric Checklist.txt",
+    "project_path" : "Rubric Checklist.txt",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "text"
+}
